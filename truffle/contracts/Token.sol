@@ -24,7 +24,7 @@ contract Token {
   function totalSupply() public view returns (uint256) {
 		return totalSupply_;
   }
-    
+
 	function balanceOf(address tokenOwner) public view returns (uint) {
 		return balances[tokenOwner];
 	}

@@ -1,11 +1,11 @@
 <mat-toolbar class="mat-elevation-z8">
   <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
-      <mat-icon *ngIf="!sidenav.opened">
-          menu
-      </mat-icon>
-      <mat-icon *ngIf="sidenav.opened">
-          close
-      </mat-icon>
+    <mat-icon *ngIf="!sidenav.opened">
+      menu
+    </mat-icon>
+    <mat-icon *ngIf="sidenav.opened">
+      close
+    </mat-icon>
   </button>
   Smarties Exchange
 </mat-toolbar>
@@ -13,17 +13,17 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
 
-    <img class="avatar mat-elevation-z8" src="https://source.unsplash.com/c_GmwfHBDzk/200x200" />
+    <!-- <img class="avatar mat-elevation-z8" src="https://source.unsplash.com/c_GmwfHBDzk/200x200" />
 
-    <mat-divider></mat-divider>
+    <mat-divider></mat-divider> -->
 
     <button mat-button class="menu-button" (click)="openSegment('transfer')">
-        <mat-icon>send</mat-icon>
-        <span>Transfer</span>
+      <mat-icon>send</mat-icon>
+      <span>Transfer</span>
     </button>
     <button mat-button class="menu-button" (click)="openSegment('balance')">
-        <mat-icon>bar_chart</mat-icon>
-        <span>Balance</span>
+      <mat-icon>bar_chart</mat-icon>
+      <span>Balance</span>
     </button>
 
   </mat-sidenav>
