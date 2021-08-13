@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { MatSidenav } from '@angular/material/sidenav';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,29 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'my-app';
+  @ViewChild(MatSidenav)
+  sidenav!: MatSidenav;
+  segment: String = 'transfer';
+
+  constructor(private observer: BreakpointObserver) {}
+
+  ngAfterViewInit() {
+    this.observer.observe(
+      ['(max-width: 800px)']
+    ).pipe(
+      delay(1)
+    ).subscribe((res) => {
+      if (res.matches) {
+        this.sidenav.mode = 'over';
+        this.sidenav.close();
+      } else {
+        this.sidenav.mode = 'side';
+        this.sidenav.open();
+      }
+    });
+  }
+
+  openSegment(segmentName: 'transfer' | 'balance') {
+    this.segment = segmentName;
+  }
 }
