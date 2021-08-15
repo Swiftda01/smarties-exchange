@@ -56,6 +56,6 @@ export class AppComponent {
   private _shortened(address: string) {
     const addressLength = address.length;
 
-    return address.substring(0, 6) + '...' + address.substring(addressLength - 4, addressLength - 1);
+    return address.substring(0, 6) + '...' + address.substring(addressLength - 4, addressLength);
   }
 }
