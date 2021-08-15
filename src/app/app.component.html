@@ -13,9 +13,14 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
 
-    <!-- <img class="avatar mat-elevation-z8" src="https://source.unsplash.com/c_GmwfHBDzk/200x200" />
+    <img class="avatar mat-elevation-z8" src="https://source.unsplash.com/c_GmwfHBDzk/200x200" />
 
-    <mat-divider></mat-divider> -->
+    <mat-divider></mat-divider>
+
+    <p>{{ accountAddress }}</p>
+    <p>{{ accountEthBalance }} ETH</p>
+
+    <mat-divider></mat-divider>
 
     <button mat-button class="menu-button" (click)="openSegment('transfer')">
       <mat-icon>send</mat-icon>
@@ -29,11 +34,6 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <form class="form" *ngIf="segment === 'transfer'">
-      <mat-form-field class="full-width" appearance="fill">
-        <mat-label>Sender Address</mat-label>
-        <input matInput>
-      </mat-form-field>
-
       <mat-form-field class="full-width" appearance="fill">
         <mat-label>Recipient Address</mat-label>
         <input matInput>

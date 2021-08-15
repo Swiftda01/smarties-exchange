@@ -15,7 +15,10 @@ export class AppComponent {
   sidenav!: MatSidenav;
   segment: String = 'transfer';
 
-  constructor(private observer: BreakpointObserver, tokenService: TokenService) {}
+  accountAddress: string = '0x0';
+  accountEthBalance: string = '0';
+
+  constructor(private observer: BreakpointObserver, private tokenService: TokenService) {}
 
   ngAfterViewInit() {
     this.observer.observe(
@@ -31,9 +34,28 @@ export class AppComponent {
         this.sidenav.open();
       }
     });
+
+    this._initAndDisplayAccount();
   }
 
   openSegment(segmentName: 'transfer' | 'balance') {
     this.segment = segmentName;
+  }
+
+  private _initAndDisplayAccount() {
+    let that = this;
+
+    this.tokenService.getAccountInfo().then(function(acctInfo: any) {
+      that.accountAddress = that._shortened(acctInfo.fromAccount);
+      that.accountEthBalance = acctInfo.balance;
+    }).catch(function(error: any) {
+      console.log(error);
+    });
+  };
+
+  private _shortened(address: string) {
+    const addressLength = address.length;
+
+    return address.substring(0, 6) + '...' + address.substring(addressLength - 4, addressLength - 1);
   }
 }
