@@ -2,6 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatSidenav } from '@angular/material/sidenav';
 import { delay } from 'rxjs/operators';
+import { TokenService } from './token.service';
+
 
 @Component({
   selector: 'app-root',
@@ -13,7 +15,7 @@ export class AppComponent {
   sidenav!: MatSidenav;
   segment: String = 'transfer';
 
-  constructor(private observer: BreakpointObserver) {}
+  constructor(private observer: BreakpointObserver, tokenService: TokenService) {}
 
   ngAfterViewInit() {
     this.observer.observe(
