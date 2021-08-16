@@ -16,6 +16,7 @@ export class TokenService {
   private account: any = null;
   private readonly web3: any;
   private enable: any;
+  private web3Provider: any;
 
   constructor() {
     if (window.ethereum === undefined) {
