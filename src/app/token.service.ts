@@ -45,9 +45,9 @@ export class TokenService {
 
   getAccountInfo() {
     return new Promise((resolve, reject) => {
-      window.web3.eth.getCoinbase(function(err: any, account: any) {
+      window.web3.eth.getCoinbase(function(err: any, account: string) {
         if(err === null) {
-          window.web3.eth.getBalance(account, function(err: any, balance: any) {
+          window.web3.eth.getBalance(account, function(err: any, balance: string) {
             if(err === null) {
               return resolve(
                 {
@@ -56,7 +56,7 @@ export class TokenService {
                 }
               );
             } else {
-              return reject('error!');
+              return reject('Error retrieving balance');
             }
           });
         }
@@ -71,10 +71,9 @@ export class TokenService {
       tokenContract.setProvider(that.web3Provider);
 
       tokenContract.deployed().then(function(instance: any) {
-        return instance.totalSupply().then(function(totalSupply: any) {
+        return instance.totalSupply().then(function(totalSupply: number) {
           return resolve(totalSupply);
         }).catch(function(error: any){
-          console.log(error);
           return reject('Error in getTotalSupply service call');
         });
       });
@@ -82,23 +81,19 @@ export class TokenService {
   }
 
   private async _getAccount(): Promise<any> {
-    console.log('transfer.service :: getAccount :: start');
     if (this.account == null) {
       this.account = await new Promise((resolve, reject) => {
-        console.log('transfer.service :: getAccount :: eth');
-        console.log(window.web3.eth);
         window.web3.eth.getAccounts((err: any, retAccount: any) => {
-          console.log('transfer.service :: getAccount: retAccount');
-          console.log(retAccount);
           if (retAccount.length > 0) {
             this.account = retAccount[0];
             resolve(this.account);
           } else {
-            alert('transfer.service :: getAccount :: no accounts found.');
-            reject('No accounts found.');
+            alert('No accounts found');
+            reject('No accounts found');
           }
+
           if (err != null) {
-            alert('transfer.service :: getAccount :: error retrieving account');
+            alert('Error retrieving account');
             reject('Error retrieving account');
           }
         });
@@ -109,19 +104,15 @@ export class TokenService {
 
   public async getUserEthBalance(): Promise<any> {
     const account = await this._getAccount();
-    console.log('transfer.service :: getUserBalance :: account');
-    console.log(account);
+
     return new Promise((resolve, reject) => {
       window.web3.eth.getBalance(account, function(err: any, balance: any) {
-        console.log('transfer.service :: getUserBalance :: getBalance');
-        console.log(balance);
         if (!err) {
           const retVal = {
             account: account,
             balance: balance
           };
-          console.log('transfer.service :: getUserBalance :: getBalance :: retVal');
-          console.log(retVal);
+
           resolve(retVal);
         } else {
           reject({account: 'error', balance: 0});
