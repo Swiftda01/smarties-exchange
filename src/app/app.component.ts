@@ -4,7 +4,6 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { delay } from 'rxjs/operators';
 import { TokenService } from './token.service';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -45,11 +44,11 @@ export class AppComponent {
   }
 
   private _getAccount() {
-    let that = this;
+    const thisComponent = this;
 
-    this.tokenService.getAccountInfo().then(function(acctInfo: any) {
-      that.accountAddress = that._shortened(acctInfo.fromAccount);
-      that.accountEthBalance = acctInfo.balance;
+    thisComponent.tokenService.getAccountInfo().then(function(acctInfo: any) {
+      thisComponent.accountAddress = thisComponent._shortened(acctInfo.fromAccount);
+      thisComponent.accountEthBalance = acctInfo.balance;
     }).catch(function(error: any) {
       console.log(error);
     });
@@ -62,10 +61,10 @@ export class AppComponent {
   }
 
   private _getTotalSupply() {
-    let that = this;
+    const thisComponent = this;
 
-    this.tokenService.getTotalSupply().then(function(totalSupply: any) {
-      that.totalSupply = totalSupply;
+    thisComponent.tokenService.getTotalSupply().then(function(totalSupply: any) {
+      thisComponent.totalSupply = totalSupply;
     }).catch(function(error: any) {
       console.log(error);
     });

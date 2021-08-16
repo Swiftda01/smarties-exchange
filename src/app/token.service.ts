@@ -2,11 +2,9 @@ import { Injectable } from '@angular/core';
 import TruffleContract from 'truffle-contract';
 
 const Web3 = require('web3');
-
-declare let require: any;
-declare let window: any;
-
 const tokenContractAbi = require('../../truffle/build/contracts/Token.json');
+
+declare let window: any;
 
 @Injectable({
   providedIn: 'root'
@@ -37,9 +35,11 @@ export class TokenService {
 
   private async _enableMetaMaskAccount(): Promise<any> {
     let enable = false;
+
     await new Promise((resolve, reject) => {
       enable = window.ethereum.enable();
     });
+
     return Promise.resolve(enable);
   }
 
@@ -56,6 +56,7 @@ export class TokenService {
                 }
               );
             } else {
+              console.log(err);
               return reject('Error');
             }
           });
@@ -65,15 +66,15 @@ export class TokenService {
   }
 
   getTotalSupply() {
-    let that = this;
     return new Promise((resolve, reject) => {
       let tokenContract = TruffleContract(tokenContractAbi);
-      tokenContract.setProvider(that.web3Provider);
+      tokenContract.setProvider(this.web3Provider);
 
       tokenContract.deployed().then(function(instance: any) {
         return instance.totalSupply().then(function(totalSupply: number) {
           return resolve(totalSupply);
-        }).catch(function(error: any){
+        }).catch(function(err: any){
+          console.log(err);
           return reject('Error in getTotalSupply service call');
         });
       });
@@ -88,11 +89,13 @@ export class TokenService {
             this.account = retAccount[0];
             resolve(this.account);
           } else {
+            console.log(err);
             alert('No accounts found');
             reject('No accounts found');
           }
 
           if (err != null) {
+            console.log(err);
             alert('Error retrieving account');
             reject('Error retrieving account');
           }
@@ -108,14 +111,10 @@ export class TokenService {
     return new Promise((resolve, reject) => {
       window.web3.eth.getBalance(account, function(err: any, balance: any) {
         if (!err) {
-          const retVal = {
-            account: account,
-            balance: balance
-          };
-
-          resolve(retVal);
+          resolve({ account: account, balance: balance });
         } else {
-          reject({account: 'error', balance: 0});
+          console.log(err);
+          reject({ account: 'error', balance: 0 });
         }
       });
     }) as Promise<any>;
