@@ -56,7 +56,7 @@ export class TokenService {
                 }
               );
             } else {
-              return reject('Error retrieving balance');
+              return reject('Error');
             }
           });
         }
