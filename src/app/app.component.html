@@ -30,21 +30,32 @@
       <mat-icon>bar_chart</mat-icon>
       <span>Balance</span>
     </button>
+    <button mat-button class="menu-button" (click)="openSegment('info')">
+      <mat-icon>help_outline</mat-icon>
+      <span>Info</span>
+    </button>
 
   </mat-sidenav>
   <mat-sidenav-content>
-    <form class="form" *ngIf="segment === 'transfer'">
-      <mat-form-field class="full-width" appearance="fill">
-        <mat-label>Recipient Address</mat-label>
-        <input matInput>
-      </mat-form-field>
-  
-      <mat-form-field class="full-width" appearance="fill">
-        <mat-label>Amount to transfer</mat-label>
-        <input matInput type="number">
-      </mat-form-field>
-  
-      <button mat-raised-button color="primary" class="full-width">Send</button>
-    </form>
+    <div *ngIf="segment === 'transfer'" class="content">
+      <form>
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Recipient Address</mat-label>
+          <input matInput>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Amount to transfer</mat-label>
+          <input matInput type="number">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" class="full-width">Send</button>
+      </form>
+    </div>
+
+    <div *ngIf="segment === 'balance'"></div>
+    <div *ngIf="segment === 'info'" id="info" class="content">
+      <p><b>Total Supply of Smarties:</b> {{ totalSupply }}</p>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

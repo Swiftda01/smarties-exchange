@@ -17,6 +17,7 @@ export class AppComponent {
 
   accountAddress: string = '0x0';
   accountEthBalance: string = '0';
+  totalSupply: number = 0;
 
   constructor(private observer: BreakpointObserver, private tokenService: TokenService) {}
 
@@ -35,14 +36,15 @@ export class AppComponent {
       }
     });
 
-    this._initAndDisplayAccount();
+    this._getAccount();
+    this._getTotalSupply();
   }
 
-  openSegment(segmentName: 'transfer' | 'balance') {
+  openSegment(segmentName: 'transfer' | 'balance' | 'info') {
     this.segment = segmentName;
   }
 
-  private _initAndDisplayAccount() {
+  private _getAccount() {
     let that = this;
 
     this.tokenService.getAccountInfo().then(function(acctInfo: any) {
@@ -57,5 +59,15 @@ export class AppComponent {
     const addressLength = address.length;
 
     return address.substring(0, 6) + '...' + address.substring(addressLength - 4, addressLength);
+  }
+
+  private _getTotalSupply() {
+    let that = this;
+
+    this.tokenService.getTotalSupply().then(function(totalSupply: any) {
+      that.totalSupply = totalSupply;
+    }).catch(function(error: any) {
+      console.log(error);
+    });
   }
 }

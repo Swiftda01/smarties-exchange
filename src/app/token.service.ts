@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
+import TruffleContract from 'truffle-contract';
+
 const Web3 = require('web3');
 
 declare let require: any;
 declare let window: any;
-const tokenAbi = require('../../truffle/build/contracts/Token.json');
+
+const tokenContractAbi = require('../../truffle/build/contracts/Token.json');
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +61,23 @@ export class TokenService {
         }
       });
     });
+  }
+
+  getTotalSupply() {
+    let that = this;
+    return new Promise((resolve, reject) => {
+      let tokenContract = TruffleContract(tokenContractAbi);
+      tokenContract.setProvider(that.web3Provider);
+
+      tokenContract.deployed().then(function(instance: any) {
+        return instance.totalSupply().then(function(totalSupply: any) {
+          return resolve(totalSupply);
+        }).catch(function(error: any){
+          console.log(error);
+          return reject('Error in getTotalSupply service call');
+        });
+      });
+    })
   }
 
   private async _getAccount(): Promise<any> {
