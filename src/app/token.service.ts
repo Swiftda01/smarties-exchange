@@ -131,19 +131,4 @@ export class TokenService {
     }
     return Promise.resolve(this.account);
   }
-
-  public async getUserEthBalance(): Promise<any> {
-    const account = await this._getAccount();
-
-    return new Promise((resolve, reject) => {
-      window.web3.eth.getBalance(account, function(err: any, balance: any) {
-        if (!err) {
-          resolve({ account: account, balance: balance });
-        } else {
-          console.log(err);
-          reject({ account: 'error', balance: 0 });
-        }
-      });
-    }) as Promise<any>;
-  }
 }
