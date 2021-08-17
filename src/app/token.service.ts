@@ -107,28 +107,4 @@ export class TokenService {
       });
     })
   }
-
-  private async _getAccount(): Promise<any> {
-    if (this.account == null) {
-      this.account = await new Promise((resolve, reject) => {
-        window.web3.eth.getAccounts((err: any, retAccount: any) => {
-          if (retAccount.length > 0) {
-            this.account = retAccount[0];
-            resolve(this.account);
-          } else {
-            console.log(err);
-            alert('No accounts found');
-            reject('No accounts found');
-          }
-
-          if (err != null) {
-            console.log(err);
-            alert('Error retrieving account');
-            reject('Error retrieving account');
-          }
-        });
-      }) as Promise<any>;
-    }
-    return Promise.resolve(this.account);
-  }
 }
