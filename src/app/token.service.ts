@@ -44,11 +44,15 @@ export class TokenService {
   }
 
   getAccountInfo() {
+    const thisService = this;
+
     return new Promise((resolve, reject) => {
       window.web3.eth.getCoinbase(function(err: any, account: string) {
         if(err === null) {
           window.web3.eth.getBalance(account, function(err: any, balance: string) {
             if(err === null) {
+              thisService.account = account;
+
               return resolve(
                 {
                   fromAccount: account,
@@ -76,6 +80,29 @@ export class TokenService {
         }).catch(function(err: any){
           console.log(err);
           return reject('Error in getTotalSupply service call');
+        });
+      });
+    })
+  }
+
+  transferTokens(recipientAddress: string, amountToTransfer: number) {
+    let thisService = this;
+
+    return new Promise((resolve, reject) => {
+      let tokenContract = TruffleContract(tokenContractAbi);
+      tokenContract.setProvider(this.web3Provider);
+
+      tokenContract.deployed().then(function(instance: any) {
+        return instance.transfer(
+          recipientAddress,
+          amountToTransfer,
+          { from: thisService.account }
+        ).then(function(response: any) {
+          console.log(response)
+          return resolve({ success: true });
+        }).catch(function(err: any){
+          console.log(err);
+          return reject('Error in transfer service call');
         });
       });
     })
