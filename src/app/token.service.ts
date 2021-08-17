@@ -44,7 +44,7 @@ export class TokenService {
   }
 
   getAccountInfo() {
-    const thisService = this;
+    let thisService = this;
 
     return new Promise((resolve, reject) => {
       window.web3.eth.getCoinbase(function(err: any, account: string) {
