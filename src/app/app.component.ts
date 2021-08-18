@@ -19,6 +19,8 @@ export class AppComponent {
   accountAddress: string = '0x0';
   accountEthBalance: string = '0';
   totalSupply: number = 0;
+  balance: number = 0;
+  percentage: number = 0;
 
   constructor(
     private observer: BreakpointObserver,
@@ -48,6 +50,7 @@ export class AppComponent {
 
     this._getAccount();
     this._getTotalSupply();
+    this._getBalance();
   }
 
   openSegment(segmentName: 'balance' | 'transfer') {
@@ -84,13 +87,28 @@ export class AppComponent {
     return address.substring(0, 6) + '...' + address.substring(addressLength - 4, addressLength);
   }
 
-  private _getTotalSupply() {
+  private async _getTotalSupply() {
     const thisComponent = this;
 
-    thisComponent.tokenService.getTotalSupply().then(function(totalSupply: any) {
+    await thisComponent.tokenService.getTotalSupply().then(function(totalSupply: any) {
       thisComponent.totalSupply = totalSupply;
     }).catch(function(error: any) {
       console.log(error);
     });
+  }
+
+  private async _getBalance() {
+    const thisComponent = this;
+
+    await thisComponent.tokenService.getBalance().then(function(balance: any) {
+      thisComponent.balance = balance;
+      thisComponent._calculatePercentage();
+    }).catch(function(error: any) {
+      console.log(error);
+    });
+  }
+
+  private _calculatePercentage() {
+    this.percentage = (this.balance / this.totalSupply) * 100;
   }
 }

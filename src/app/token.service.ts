@@ -85,6 +85,24 @@ export class TokenService {
     })
   }
 
+  getBalance() {
+    let thisService = this;
+
+    return new Promise((resolve, reject) => {
+      let tokenContract = TruffleContract(tokenContractAbi);
+      tokenContract.setProvider(this.web3Provider);
+
+      tokenContract.deployed().then(function(instance: any) {
+        return instance.balanceOf(thisService.account).then(function(balance: number) {
+          return resolve(balance);
+        }).catch(function(err: any){
+          console.log(err);
+          return reject('Error in balanceOf service call');
+        });
+      });
+    })
+  }
+
   transferTokens(recipientAddress: string, amountToTransfer: number) {
     let thisService = this;
 
