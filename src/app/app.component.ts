@@ -13,7 +13,7 @@ import { TokenService } from './token.service';
 export class AppComponent {
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
-  segment: String = 'transfer';
+  segment: String = 'balance';
   transferForm: FormGroup;
 
   accountAddress: string = '0x0';
@@ -50,7 +50,7 @@ export class AppComponent {
     this._getTotalSupply();
   }
 
-  openSegment(segmentName: 'transfer' | 'balance' | 'info') {
+  openSegment(segmentName: 'balance' | 'transfer') {
     this.segment = segmentName;
   }
 
