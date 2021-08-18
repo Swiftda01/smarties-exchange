@@ -107,4 +107,8 @@ export class TokenService {
       });
     })
   }
+
+  isValidAddress(address: string) {
+    return window.web3.utils.isAddress(address)
+  }
 }
