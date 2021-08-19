@@ -63,13 +63,16 @@ export class AppComponent {
     const amountToTransfer = this.transferForm.value.amountToTransfer;
 
     if(confirm(`Are you sure to transfer ${amountToTransfer} tokens?`)) {
-      thisComponent.tokenService.transferTokens(recipientAddress, amountToTransfer).then(function(totalSupply: any) {
+      thisComponent.tokenService.transferTokens(
+        recipientAddress,
+        amountToTransfer
+      ).then(function(response: any) {
         alert('Transfer sent')
       }).catch(function(error: any) {
         console.log(error);
         alert(error);
       });
-    };
+    }
   }
 
   private _getTotalSupply() {
@@ -97,7 +100,8 @@ export class AppComponent {
   private _shortened(address: string) {
     const addressLength = address.length;
 
-    return address.substring(0, 6) + '...' + address.substring(addressLength - 4, addressLength);
+    return address.substring(0, 6) + '...' +
+      address.substring(addressLength - 4, addressLength);
   }
 
   private _getBalance() {
