@@ -62,11 +62,14 @@ export class AppComponent {
     const recipientAddress = this.transferForm.value.recipientAddress;
     const amountToTransfer = this.transferForm.value.amountToTransfer;
 
-    thisComponent.tokenService.transferTokens(recipientAddress, amountToTransfer).then(function(totalSupply: any) {
-      // Do something
-    }).catch(function(error: any) {
-      console.log(error);
-    });
+    if(confirm(`Are you sure to transfer ${amountToTransfer} tokens?`)) {
+      thisComponent.tokenService.transferTokens(recipientAddress, amountToTransfer).then(function(totalSupply: any) {
+        alert('Transfer sent')
+      }).catch(function(error: any) {
+        console.log(error);
+        alert(error);
+      });
+    };
   }
 
   private _getTotalSupply() {
