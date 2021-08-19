@@ -48,25 +48,13 @@ export class AppComponent {
       }
     });
 
-    this._getAccount();
     this._getTotalSupply();
-    this._getBalance();
+    this._getAccount();
   }
 
   openSegment(segmentName: 'balance' | 'transfer') {
     this.segment = segmentName;
   }
-
-  private _getAccount() {
-    const thisComponent = this;
-
-    thisComponent.tokenService.getAccountInfo().then(function(acctInfo: any) {
-      thisComponent.accountAddress = thisComponent._shortened(acctInfo.fromAccount);
-      thisComponent.accountEthBalance = acctInfo.balance;
-    }).catch(function(error: any) {
-      console.log(error);
-    });
-  };
 
   transfer() {
     const thisComponent = this;
@@ -81,26 +69,38 @@ export class AppComponent {
     });
   }
 
-  private _shortened(address: string) {
-    const addressLength = address.length;
-
-    return address.substring(0, 6) + '...' + address.substring(addressLength - 4, addressLength);
-  }
-
-  private async _getTotalSupply() {
+  private _getTotalSupply() {
     const thisComponent = this;
 
-    await thisComponent.tokenService.getTotalSupply().then(function(totalSupply: any) {
+    thisComponent.tokenService.getTotalSupply().then(function(totalSupply: any) {
       thisComponent.totalSupply = totalSupply;
     }).catch(function(error: any) {
       console.log(error);
     });
   }
 
-  private async _getBalance() {
+  private _getAccount() {
     const thisComponent = this;
 
-    await thisComponent.tokenService.getBalance().then(function(balance: any) {
+    thisComponent.tokenService.getAccountInfo().then(function(acctInfo: any) {
+      thisComponent.accountAddress = thisComponent._shortened(acctInfo.fromAccount);
+      thisComponent.accountEthBalance = acctInfo.balance;
+      thisComponent._getBalance();
+    }).catch(function(error: any) {
+      console.log(error);
+    });
+  };
+
+  private _shortened(address: string) {
+    const addressLength = address.length;
+
+    return address.substring(0, 6) + '...' + address.substring(addressLength - 4, addressLength);
+  }
+
+  private _getBalance() {
+    const thisComponent = this;
+
+    thisComponent.tokenService.getBalance().then(function(balance: any) {
       thisComponent.balance = balance;
       thisComponent._calculatePercentage();
     }).catch(function(error: any) {
