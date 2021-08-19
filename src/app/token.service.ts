@@ -23,14 +23,14 @@ export class TokenService {
       if (typeof window.web3 !== 'undefined') {
         this.web3 = window.web3.currentProvider;
       } else {
-        this.web3 = new Web3.providers.HttpProvider('http://localhost:8545');
+        this.web3 = new Web3.providers.HttpProvider('http://127.0.0.1:8545');
       }
-      console.log('transfer.service :: constructor :: window.ethereum');
       window.web3 = new Web3(window.ethereum);
-      console.log('transfer.service :: constructor :: this.web3');
-      console.log(this.web3);
       this.enable = this._enableMetaMaskAccount();
     }
+    // Local development
+    // this.web3Provider = new Web3.providers.HttpProvider('http://127.0.0.1:8545');
+    // window.web3 = new Web3(this.web3Provider);
   }
 
   private async _enableMetaMaskAccount(): Promise<any> {
