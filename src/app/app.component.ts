@@ -56,7 +56,7 @@ export class AppComponent {
     this.segment = segmentName;
   }
 
-  transfer() {
+  transferTokens() {
     const thisComponent = this;
 
     const recipientAddress = this.transferForm.value.recipientAddress;
