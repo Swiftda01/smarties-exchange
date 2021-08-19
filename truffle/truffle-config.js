@@ -1,3 +1,15 @@
+const getEnv = env => {
+  const value = process.env[env];
+  if (typeof value === 'undefined') {
+    throw new Error(`${env} has not been set.`);
+  }
+  return value;
+};
+
+const mnemonic = getEnv('ETH_WALLET_MNEMONIC');
+const Web3 = require("web3");
+const web3 = new Web3();
+
 module.exports = {
   networks: {
     development: {
@@ -6,6 +18,12 @@ module.exports = {
       network_id: "*",
       gas: 5000000,
       gasPrice: 100000000000
+    },
+    live: {
+      provider: () => new HDWalletProvider(mnemonic, liveNetwork),
+      network_id: liveNetworkId,
+      gasPrice: web3.utils.toWei('10', 'gwei')
     }
   }
 };
+
