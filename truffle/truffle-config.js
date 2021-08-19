@@ -6,7 +6,7 @@ const getEnv = env => {
   return value;
 };
 
-const HDWalletProvider = require('truffle-hdwallet-provider');
+const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 const mnemonic = getEnv('ETH_WALLET_MNEMONIC');
 const liveNetwork = getEnv('ETH_LIVE_NETWORK');
