@@ -7,6 +7,9 @@ const getEnv = env => {
 };
 
 const mnemonic = getEnv('ETH_WALLET_MNEMONIC');
+const liveNetwork = getEnv('ETH_LIVE_NETWORK');
+const liveNetworkId = getEnv('ETH_LIVE_NETWORK_ID');
+
 const Web3 = require("web3");
 const web3 = new Web3();
 
