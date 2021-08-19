@@ -12,13 +12,13 @@ const mnemonic = getEnv('ETH_WALLET_MNEMONIC');
 const liveNetwork = getEnv('ETH_LIVE_NETWORK');
 const liveNetworkId = getEnv('ETH_LIVE_NETWORK_ID');
 
-const Web3 = require("web3");
+const Web3 = require('web3');
 const web3 = new Web3();
 
 module.exports = {
   networks: {
     development: {
-      host: "127.0.0.1",
+      host: '127.0.0.1',
       port: 8545,
       network_id: "*",
       gas: 5000000,
