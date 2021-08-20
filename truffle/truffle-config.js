@@ -9,6 +9,10 @@ const getEnv = env => {
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 const mnemonic = getEnv('ETH_WALLET_MNEMONIC');
+
+const rinkebyNetwork = getEnv('ETH_RINKEBY_NETWORK');
+const rinkebyNetworkId = getEnv('ETH_RINKEBY_NETWORK_ID');
+
 const liveNetwork = getEnv('ETH_LIVE_NETWORK');
 const liveNetworkId = getEnv('ETH_LIVE_NETWORK_ID');
 
@@ -23,6 +27,12 @@ module.exports = {
       network_id: "*",
       gas: 5000000,
       gasPrice: 100000000000
+    },
+    rinkeby: {
+      provider: () => new HDWalletProvider(mnemonic, rinkebyNetwork),
+      network_id: rinkebyNetworkId,
+      gas: 7000000,
+      gasPrice: web3.utils.toWei('10', 'gwei')
     },
     live: {
       provider: () => new HDWalletProvider(mnemonic, liveNetwork),
