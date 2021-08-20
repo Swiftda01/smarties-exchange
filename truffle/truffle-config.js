@@ -16,6 +16,7 @@ const rinkebyAddress = getEnv('ETH_RINKEBY_ADDRESS');
 
 const liveNetwork = getEnv('ETH_LIVE_NETWORK');
 const liveNetworkId = getEnv('ETH_LIVE_NETWORK_ID');
+const liveAddress = getEnv('ETH_LIVE_ADDRESS');
 
 const Web3 = require('web3');
 const web3 = new Web3();
@@ -40,7 +41,8 @@ module.exports = {
       provider: () => new HDWalletProvider(mnemonic, liveNetwork),
       network_id: liveNetworkId,
       gas: 7000000,
-      gasPrice: web3.utils.toWei('10', 'gwei')
+      gasPrice: web3.utils.toWei('10', 'gwei'),
+      from: liveAddress
     }
   }
 };
