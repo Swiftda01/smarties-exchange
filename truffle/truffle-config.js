@@ -37,6 +37,7 @@ module.exports = {
     live: {
       provider: () => new HDWalletProvider(mnemonic, liveNetwork),
       network_id: liveNetworkId,
+      gas: 7000000,
       gasPrice: web3.utils.toWei('10', 'gwei')
     }
   }
