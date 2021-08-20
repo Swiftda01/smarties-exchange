@@ -25,7 +25,8 @@ export class TokenService {
       } else {
         this.web3 = new Web3.providers.HttpProvider('http://127.0.0.1:8545');
       }
-      window.web3 = new Web3(window.ethereum);
+      this.web3Provider = window.ethereum;
+      window.web3 = new Web3(this.web3Provider);
       this.enable = this._enableMetaMaskAccount();
     }
     // Local development
