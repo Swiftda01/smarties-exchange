@@ -12,7 +12,7 @@ const mnemonic = getEnv('ETH_WALLET_MNEMONIC');
 
 const rinkebyNetwork = getEnv('ETH_RINKEBY_NETWORK');
 const rinkebyNetworkId = getEnv('ETH_RINKEBY_NETWORK_ID');
-const rinkebyAddress = getEnv('ETH_ADDRESS');
+const rinkebyAddress = getEnv('ETH_RINKEBY_ADDRESS');
 
 const liveNetwork = getEnv('ETH_LIVE_NETWORK');
 const liveNetworkId = getEnv('ETH_LIVE_NETWORK_ID');
