@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import TruffleContract from 'truffle-contract';
+import { ToastrService } from 'ngx-toastr';
 
 const Web3 = require('web3');
 const tokenContractAbi = require('../../truffle/build/contracts/Token.json');
@@ -18,9 +19,9 @@ export class TokenService {
   private enable: any;
   private web3Provider: any;
 
-  constructor() {
+  constructor(private toaster: ToastrService) {
     if (window.ethereum === undefined) {
-      alert('Non-Ethereum browser detected. Install MetaMask');
+      toaster.warning('Non-Ethereum browser detected. Install MetaMask to use this exchange.');
     } else {
       if (typeof window.web3 !== 'undefined') {
         this.web3 = window.web3.currentProvider;

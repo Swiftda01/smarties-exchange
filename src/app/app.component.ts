@@ -4,6 +4,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatSidenav } from '@angular/material/sidenav';
 import { delay } from 'rxjs/operators';
 import { TokenService } from './token.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +28,8 @@ export class AppComponent {
   constructor(
     private observer: BreakpointObserver,
     private formBuilder: FormBuilder,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private toaster: ToastrService
   ) {
     this.transferForm = formBuilder.group({
       recipientAddress: ['', Validators.required],
@@ -73,29 +75,28 @@ export class AppComponent {
     const amountToTransfer = thisComponent.transferForm.value.amountToTransfer;
 
     if(!thisComponent.tokenService.isValidAddress(recipientAddress)) {
-      alert('Invalid address');
+      thisComponent.toaster.warning('Invalid address');
       return;
     }
 
     thisComponent.transferForm.controls['recipientAddress'].disable();
     thisComponent.transferForm.controls['amountToTransfer'].disable();
 
-    if(confirm(`Are you sure you want to transfer ${amountToTransfer} tokens?`)) {
-      thisComponent.transferInProgress = true;
-      thisComponent.transferButtonText = 'Processing transfer..'
+    thisComponent.transferInProgress = true;
+    thisComponent.transferButtonText = 'Processing transfer..'
 
-      thisComponent.tokenService.transferTokens(
-        recipientAddress,
-        amountToTransfer
-      ).then(function(response: any) {
-        thisComponent._resetTransferForm();
-        alert('Transfer sent')
-      }).catch(function(error: any) {
-        console.log(error);
-        thisComponent._resetTransferForm();
-        alert('Transfer unsuccessful');
-      });
-    }
+    thisComponent.tokenService.transferTokens(
+      recipientAddress,
+      amountToTransfer
+    ).then(function(response: any) {
+      thisComponent.segment = 'balance';
+      thisComponent._resetTransferForm();
+      thisComponent.toaster.success('Transfer sent');
+    }).catch(function(error: any) {
+      console.log(error);
+      thisComponent._resetTransferForm();
+      thisComponent.toaster.error('Transfer unsuccessful');
+    });
   }
 
   private _resetTransferForm() {
