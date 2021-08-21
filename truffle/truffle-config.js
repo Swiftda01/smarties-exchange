@@ -42,7 +42,8 @@ module.exports = {
       network_id: liveNetworkId,
       gas: 7000000,
       gasPrice: web3.utils.toWei('10', 'gwei'),
-      from: liveAddress
+      from: liveAddress,
+      networkCheckTimeout: 100000000
     }
   }
 };
