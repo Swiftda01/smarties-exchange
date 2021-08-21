@@ -62,7 +62,7 @@ export class AppComponent {
     const recipientAddress = this.transferForm.value.recipientAddress;
     const amountToTransfer = this.transferForm.value.amountToTransfer;
 
-    if(confirm(`Are you sure to transfer ${amountToTransfer} tokens?`)) {
+    if(confirm(`Are you sure you want to transfer ${amountToTransfer} tokens?`)) {
       thisComponent.tokenService.transferTokens(
         recipientAddress,
         amountToTransfer
