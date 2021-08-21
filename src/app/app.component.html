@@ -60,7 +60,9 @@
           <input matInput type="number" formControlName="amountToTransfer">
         </mat-form-field>
 
-        <button id="send-button" mat-raised-button color="primary" class="full-width" (click)="transferTokens()">Send</button>
+        <button id="send-button" mat-raised-button color="primary" class="full-width" (click)="transferTokens()" [disabled]="!transferForm.valid || transferInProgress">
+          {{ transferButtonText }}
+        </button>
       </form>
     </div>
 

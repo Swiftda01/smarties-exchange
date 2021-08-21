@@ -15,6 +15,8 @@ export class AppComponent {
   sidenav!: MatSidenav;
   segment: String = 'balance';
   transferForm: FormGroup;
+  transferInProgress: boolean = false;
+  transferButtonText: string = 'Send';
 
   accountAddress: string = '0x0';
   accountEthBalance: string = '0';
@@ -59,20 +61,42 @@ export class AppComponent {
   transferTokens() {
     const thisComponent = this;
 
-    const recipientAddress = this.transferForm.value.recipientAddress;
-    const amountToTransfer = this.transferForm.value.amountToTransfer;
+    const recipientAddress = thisComponent.transferForm.value.recipientAddress;
+    const amountToTransfer = thisComponent.transferForm.value.amountToTransfer;
+
+    if(!thisComponent.tokenService.isValidAddress(recipientAddress)) {
+      alert('Invalid address');
+      return;
+    }
+
+    thisComponent.transferForm.controls['recipientAddress'].disable();
+    thisComponent.transferForm.controls['amountToTransfer'].disable();
 
     if(confirm(`Are you sure you want to transfer ${amountToTransfer} tokens?`)) {
+      thisComponent.transferInProgress = true;
+      thisComponent.transferButtonText = 'Processing transfer..'
+
       thisComponent.tokenService.transferTokens(
         recipientAddress,
         amountToTransfer
       ).then(function(response: any) {
+        thisComponent._resetTransferForm();
         alert('Transfer sent')
       }).catch(function(error: any) {
         console.log(error);
-        alert(error);
+        thisComponent._resetTransferForm();
+        alert('Transfer unsuccessful');
       });
     }
+  }
+
+  private _resetTransferForm() {
+    this.transferForm.controls['recipientAddress'].enable();
+    this.transferForm.controls['amountToTransfer'].enable();
+    this.transferForm.reset();
+    this.transferForm.markAsPristine();
+    this.transferButtonText = 'Send'
+    this.transferInProgress = false;
   }
 
   private _getTotalSupply() {
