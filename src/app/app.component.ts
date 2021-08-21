@@ -140,6 +140,6 @@ export class AppComponent {
   }
 
   private _calculatePercentage() {
-    this.percentage = (this.balance / this.totalSupply) * 100;
+    this.percentage = parseFloat(((this.balance / this.totalSupply) * 100).toFixed(5));
   }
 }
