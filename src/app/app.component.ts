@@ -35,7 +35,11 @@ export class AppComponent {
     });
   }
 
-  ngAfterViewInit() {
+  ngAfterContentInit() {
+    this.tokenService.metamaskHasChanged().subscribe(() => {
+      this._populateData();
+    });
+
     this.observer.observe(
       ['(max-width: 800px)']
     ).pipe(
@@ -50,6 +54,10 @@ export class AppComponent {
       }
     });
 
+    this._populateData();
+  }
+
+  private _populateData() {
     this._getTotalSupply();
     this._getAccount();
   }

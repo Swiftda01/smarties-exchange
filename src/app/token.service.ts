@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import TruffleContract from 'truffle-contract';
 
 const Web3 = require('web3');
@@ -11,6 +12,7 @@ declare let window: any;
 })
 
 export class TokenService {
+  private metamaskChanged = new BehaviorSubject(false);
   private account: any = null;
   private readonly web3: any;
   private enable: any;
@@ -35,13 +37,26 @@ export class TokenService {
   }
 
   private async _enableMetaMaskAccount(): Promise<any> {
+    let thisService = this;
     let enable = false;
 
     await new Promise((resolve, reject) => {
+      window.ethereum.on('accountsChanged', function () {
+        thisService.metamaskChanged.next(true);
+      });
+
+      window.ethereum.on('networkChanged', function () {
+        thisService.metamaskChanged.next(true);
+      })
+
       enable = window.ethereum.enable();
     });
 
     return Promise.resolve(enable);
+  }
+
+  metamaskHasChanged(): Observable<boolean> {
+    return this.metamaskChanged.asObservable();
   }
 
   getAccountInfo() {
