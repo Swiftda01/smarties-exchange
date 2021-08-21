@@ -114,7 +114,7 @@ export class AppComponent {
 
     thisComponent.tokenService.getAccountInfo().then(function(acctInfo: any) {
       thisComponent.accountAddress = thisComponent._shortened(acctInfo.fromAccount);
-      thisComponent.accountEthBalance = acctInfo.balance.substring(0, 5);
+      thisComponent.accountEthBalance = acctInfo.balance.substring(0, 9);
       thisComponent._getBalance();
     }).catch(function(error: any) {
       console.log(error);
