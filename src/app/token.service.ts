@@ -15,45 +15,19 @@ declare let window: any;
 export class TokenService {
   private metamaskChanged = new BehaviorSubject(false);
   private account: any = null;
-  private readonly web3: any;
   private enable: any;
   private web3Provider: any;
 
   constructor(private toaster: ToastrService) {
     if (window.ethereum === undefined) {
-      toaster.warning('Non-Ethereum browser detected. Install MetaMask to use this exchange.');
+      toaster.warning(
+        'Non-Ethereum browser detected. Install MetaMask to use this exchange.'
+      );
     } else {
-      if (typeof window.web3 !== 'undefined') {
-        this.web3 = window.web3.currentProvider;
-      } else {
-        this.web3 = new Web3.providers.HttpProvider('http://127.0.0.1:8545');
-      }
       this.web3Provider = window.ethereum;
       window.web3 = new Web3(this.web3Provider);
       this.enable = this._enableMetaMaskAccount();
     }
-    // Local development
-    // this.web3Provider = new Web3.providers.HttpProvider('http://127.0.0.1:8545');
-    // window.web3 = new Web3(this.web3Provider);
-  }
-
-  private async _enableMetaMaskAccount(): Promise<any> {
-    let thisService = this;
-    let enable = false;
-
-    await new Promise((resolve, reject) => {
-      window.ethereum.on('accountsChanged', function () {
-        thisService.metamaskChanged.next(true);
-      });
-
-      window.ethereum.on('networkChanged', function () {
-        thisService.metamaskChanged.next(true);
-      })
-
-      enable = window.ethereum.enable();
-    });
-
-    return Promise.resolve(enable);
   }
 
   metamaskHasChanged(): Observable<boolean> {
@@ -145,5 +119,24 @@ export class TokenService {
 
   isValidAddress(address: string) {
     return window.web3.utils.isAddress(address)
+  }
+
+  private async _enableMetaMaskAccount(): Promise<any> {
+    let thisService = this;
+    let enable = false;
+
+    await new Promise((resolve, reject) => {
+      window.ethereum.on('accountsChanged', function () {
+        thisService.metamaskChanged.next(true);
+      });
+
+      window.ethereum.on('networkChanged', function () {
+        thisService.metamaskChanged.next(true);
+      })
+
+      enable = window.ethereum.enable();
+    });
+
+    return Promise.resolve(enable);
   }
 }
