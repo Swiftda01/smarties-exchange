@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -29,7 +29,8 @@ export class AppComponent {
     private observer: BreakpointObserver,
     private formBuilder: FormBuilder,
     private tokenService: TokenService,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private changeDetector: ChangeDetectorRef
   ) {
     this.transferForm = formBuilder.group({
       recipientAddress: ['', Validators.required],
@@ -38,8 +39,9 @@ export class AppComponent {
   }
 
   ngAfterContentInit() {
-    this.tokenService.metamaskHasChanged().subscribe(() => {
+    this.tokenService.metaMaskHasChanged().subscribe(() => {
       this._populateData();
+      this._detectDataChanges();
     });
 
     this.observer.observe(
@@ -97,6 +99,10 @@ export class AppComponent {
       thisComponent._resetTransferForm();
       thisComponent.toaster.error('Transfer unsuccessful');
     });
+  }
+
+  private _detectDataChanges() {
+    setInterval(() => { this.changeDetector.detectChanges(); }, 100);
   }
 
   private _resetTransferForm() {

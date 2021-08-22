@@ -13,7 +13,7 @@ declare let window: any;
 })
 
 export class TokenService {
-  private metamaskChanged = new BehaviorSubject(false);
+  private metaMaskChanged = new BehaviorSubject(false);
   private account: any = null;
   private enable: any;
   private web3Provider: any;
@@ -30,8 +30,8 @@ export class TokenService {
     }
   }
 
-  metamaskHasChanged(): Observable<boolean> {
-    return this.metamaskChanged.asObservable();
+  metaMaskHasChanged(): Observable<boolean> {
+    return this.metaMaskChanged.asObservable();
   }
 
   getAccountInfo() {
@@ -127,11 +127,11 @@ export class TokenService {
 
     await new Promise((resolve, reject) => {
       window.ethereum.on('accountsChanged', function () {
-        thisService.metamaskChanged.next(true);
+        thisService.metaMaskChanged.next(true);
       });
 
-      window.ethereum.on('networkChanged', function () {
-        thisService.metamaskChanged.next(true);
+      window.ethereum.on('chainChanged', function () {
+        thisService.metaMaskChanged.next(true);
       })
 
       enable = window.ethereum.enable();
