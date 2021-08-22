@@ -17,6 +17,9 @@ export class TokenService {
   private account: any = null;
   private enable: any;
   private web3Provider: any;
+  private supportedChainIds: Array<number> = [
+    4 // Rinkeby
+  ]
 
   constructor(private toaster: ToastrService) {
     if (window.ethereum === undefined) {
@@ -34,7 +37,20 @@ export class TokenService {
     return this.metaMaskChanged.asObservable();
   }
 
-  getAccountInfo() {
+  checkIfNetworkIsSupported(): Promise<any> {
+    let thisService = this;
+
+    return new Promise((resolve, reject) => {
+      window.web3.eth.net.getId().then(function(chainId: number) {
+        return resolve(thisService.supportedChainIds.includes(chainId));
+      }).catch(function(err: any){
+        console.log(err);
+        return reject('Error in getChainId service call');
+      });
+    });
+  }
+
+  getAccountInfo(): Promise<any> {
     let thisService = this;
 
     return new Promise((resolve, reject) => {
@@ -60,7 +76,7 @@ export class TokenService {
     });
   }
 
-  getTotalSupply() {
+  getTotalSupply(): Promise<any> {
     return new Promise((resolve, reject) => {
       let tokenContract = TruffleContract(tokenContractAbi);
       tokenContract.setProvider(this.web3Provider);
@@ -76,7 +92,7 @@ export class TokenService {
     })
   }
 
-  getBalance() {
+  getBalance(): Promise<any> {
     let thisService = this;
 
     return new Promise((resolve, reject) => {
@@ -94,7 +110,7 @@ export class TokenService {
     })
   }
 
-  transferTokens(recipientAddress: string, amountToTransfer: number) {
+  transferTokens(recipientAddress: string, amountToTransfer: number): Promise<any> {
     let thisService = this;
 
     return new Promise((resolve, reject) => {
@@ -117,8 +133,8 @@ export class TokenService {
     })
   }
 
-  isValidAddress(address: string) {
-    return window.web3.utils.isAddress(address)
+  isValidAddress(address: string): boolean {
+    return window.web3.utils.isAddress(address);
   }
 
   private async _enableMetaMaskAccount(): Promise<any> {

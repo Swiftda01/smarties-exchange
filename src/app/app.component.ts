@@ -62,8 +62,18 @@ export class AppComponent {
   }
 
   private _populateData() {
-    this._getTotalSupply();
-    this._getAccount();
+    const thisComponent = this;
+
+    this.tokenService.checkIfNetworkIsSupported().then(function(supported: boolean) {
+      if(supported) {
+        thisComponent._getTotalSupply();
+        thisComponent._getAccount();
+      } else {
+        thisComponent.toaster.warning(
+          'Network not supported. This app runs on the Rinkeby Testnet.'
+        );
+      }
+    });
   }
 
   openSegment(segmentName: 'balance' | 'transfer') {
