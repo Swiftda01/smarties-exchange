@@ -104,6 +104,7 @@ export class AppComponent {
       thisComponent.segment = 'balance';
       thisComponent._resetTransferForm();
       thisComponent.toaster.success('Transfer sent');
+      thisComponent._populateData();
     }).catch(function(error: any) {
       console.log(error);
       thisComponent._resetTransferForm();
