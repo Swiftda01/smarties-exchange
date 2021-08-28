@@ -73,6 +73,8 @@ export class AppComponent {
           'Network not supported. This app runs on the Rinkeby Testnet.'
         );
       }
+    }).catch(function(error: any) {
+      console.log(error);
     });
   }
 
